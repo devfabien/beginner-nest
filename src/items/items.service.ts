@@ -1,8 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Item } from './interfaces/item.interface';
-// import { CreateItemDto } from './dto/create-item.dto';
 
 @Injectable()
 export class ItemsService {
@@ -12,7 +11,9 @@ export class ItemsService {
     return await this.itemModel.find();
   }
   async findOne(id: string): Promise<Item> {
-    return await this.itemModel.findOne({ _id: id });
+    const response = await this.itemModel.findOne({ _id: id });
+    if (!response) throw new NotFoundException();
+    return response;
   }
   async create(item: Item): Promise<Item> {
     const newItem = new this.itemModel(item);
