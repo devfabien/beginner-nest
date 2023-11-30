@@ -20,9 +20,15 @@ export class ItemsService {
     return await newItem.save();
   }
   async delete(id: string): Promise<Item> {
-    return await this.itemModel.findByIdAndDelete(id);
+    const response = await this.itemModel.findByIdAndDelete(id);
+    if (!response) throw new NotFoundException();
+    return response;
   }
   async update(id: string, item: Item): Promise<Item> {
-    return await this.itemModel.findByIdAndUpdate(id, item, { new: true });
+    const response = await this.itemModel.findByIdAndUpdate(id, item, {
+      new: true,
+    });
+    if (!response) throw new NotFoundException();
+    return response;
   }
 }
