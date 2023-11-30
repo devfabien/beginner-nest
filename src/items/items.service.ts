@@ -25,8 +25,10 @@ export class ItemsService {
     return response;
   }
   async update(id: string, item: Item): Promise<Item> {
-    const response = await this.itemModel.findOne({ _id: id });
-    if (!response) throw new NotFoundException();
-    return await this.itemModel.findByIdAndUpdate(id, item, { new: true });
+    try {
+      return await this.itemModel.findByIdAndUpdate(id, item, { new: true });
+    } catch {
+      throw new NotFoundException();
+    }
   }
 }
