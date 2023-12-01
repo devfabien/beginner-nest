@@ -1,16 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ItemsModule } from './items/items.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ItemsController } from './items/items.controller';
+import config from '../config/keys';
 
 @Module({
-  imports: [
-    MongooseModule.forRoot(
-      'mongodb+srv://ishimwefabien1:Qwerty123@cluster0.klbowej.mongodb.net/',
-    ),
-  ],
-  controllers: [AppController, ItemsController],
+  imports: [ItemsModule, MongooseModule.forRoot(config.mongoURI)],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
