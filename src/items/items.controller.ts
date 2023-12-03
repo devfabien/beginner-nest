@@ -6,6 +6,8 @@ import {
   Delete,
   Body,
   Param,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { CreateItemDto } from './dto/create-item.dto';
 import { ItemsService } from './items.service';
@@ -24,6 +26,7 @@ export class ItemsController {
     return this.itemsService.findOne(id);
   }
   @Post()
+  @UsePipes(new ValidationPipe())
   create(@Body() createItemDto: CreateItemDto): Promise<Item> {
     return this.itemsService.create(createItemDto);
   }

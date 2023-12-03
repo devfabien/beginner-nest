@@ -1,5 +1,9 @@
+import { IsNotEmpty, MinLength } from 'class-validator';
+
 export class CreateItemDto {
-  readonly name: string;
-  readonly description: string;
-  readonly quantity: number;
+  @IsNotEmpty()
+  @MinLength(8)
+  name: string;
+  description: string;
+  quantity: number;
 }
