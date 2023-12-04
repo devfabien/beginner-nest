@@ -47,7 +47,6 @@ describe('ItemsService', () => {
       expect(result).toEqual(mockItem);
     });
 
-    //new test
     it('Should throw a BadRequestException if invalid id is provided', async () => {
       const id = 'invalid-id';
       const isValidObjectIdMock = jest
@@ -58,7 +57,7 @@ describe('ItemsService', () => {
       expect(isValidObjectIdMock).toHaveBeenCalledWith(id);
       isValidObjectIdMock.mockRestore();
     });
-    //new test
+
     it('should throw a NotFoundException if item id is not found', async () => {
       jest.spyOn(model, 'findOne').mockResolvedValue(null);
       await expect(service.findOne(mockItem._id)).rejects.toThrow(
