@@ -1,8 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ItemsService } from './items.service';
 import { getModelToken } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { Item } from './interfaces/item.interface';
+import { BadRequestException } from '@nestjs/common';
 
 describe('ItemsService', () => {
   let service: ItemsService;
@@ -44,6 +45,18 @@ describe('ItemsService', () => {
       const result = await service.findOne(mockItem._id);
       expect(model.findOne).toHaveBeenCalledWith({ _id: mockItem._id });
       expect(result).toEqual(mockItem);
+    });
+
+    //new test
+    it('Should throw a BadRequestException if invalid id is provided', async () => {
+      const id = 'invalid-id';
+      const isValidObjectIdMock = jest
+        .spyOn(mongoose, 'isValidObjectId')
+        .mockReturnValue(false);
+
+      await expect(service.findOne(id)).rejects.toThrow(BadRequestException);
+      expect(isValidObjectIdMock).toHaveBeenCalledWith(id);
+      isValidObjectIdMock.mockRestore();
     });
   });
 });
