@@ -3,7 +3,7 @@ import { ItemsService } from './items.service';
 import { getModelToken } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { Item } from './interfaces/item.interface';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 
 describe('ItemsService', () => {
   let service: ItemsService;
@@ -57,6 +57,14 @@ describe('ItemsService', () => {
       await expect(service.findOne(id)).rejects.toThrow(BadRequestException);
       expect(isValidObjectIdMock).toHaveBeenCalledWith(id);
       isValidObjectIdMock.mockRestore();
+    });
+    //new test
+    it('should throw a NotFoundException if item id is not found', async () => {
+      jest.spyOn(model, 'findOne').mockResolvedValue(null);
+      await expect(service.findOne(mockItem._id)).rejects.toThrow(
+        NotFoundException,
+      );
+      expect(model.findOne).toHaveBeenCalledWith({ _id: mockItem._id });
     });
   });
 });
