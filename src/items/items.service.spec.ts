@@ -14,7 +14,7 @@ describe('ItemsService', () => {
     __v: 0,
     description: 'this is item two',
   };
-  const mockItemService = { find: jest.fn() };
+  const mockItemService = { findOne: jest.fn(), find: jest.fn() };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -35,6 +35,15 @@ describe('ItemsService', () => {
       jest.spyOn(model, 'find').mockResolvedValue([mockItem]);
       const output = await service.findAll();
       expect(output).toEqual([mockItem]);
+    });
+  });
+
+  describe('finOne', () => {
+    it('should find return an item by id', async () => {
+      jest.spyOn(model, 'findOne').mockResolvedValue(mockItem);
+      const result = await service.findOne(mockItem._id);
+      expect(model.findOne).toHaveBeenCalledWith({ _id: mockItem._id });
+      expect(result).toEqual(mockItem);
     });
   });
 });
