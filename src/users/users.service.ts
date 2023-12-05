@@ -24,4 +24,8 @@ export class UsersService {
     if (!response) throw new NotFoundException('User not found');
     return response;
   }
+
+  async updateById(id: string, user: Users): Promise<Users> {
+    return await this.userModel.findByIdAndUpdate(id, user, { new: true });
+  }
 }
