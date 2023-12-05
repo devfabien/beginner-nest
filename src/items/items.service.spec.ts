@@ -19,6 +19,7 @@ describe('ItemsService', () => {
     findOne: jest.fn(),
     find: jest.fn(),
     findByIdAndUpdate: jest.fn(),
+    findByIdAndDelete: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -86,6 +87,14 @@ describe('ItemsService', () => {
         { new: true },
       );
       expect(result).toEqual(updatedItem);
+    });
+  });
+  describe('deleteById', () => {
+    it('should find by id and delete an item', async () => {
+      jest.spyOn(model, 'findByIdAndDelete').mockResolvedValue(mockItem);
+      const result = await service.delete(mockItem._id);
+      expect(model.findByIdAndDelete).toHaveBeenCalledWith(mockItem._id);
+      expect(result).toEqual(mockItem);
     });
   });
 });
