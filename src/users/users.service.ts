@@ -28,4 +28,8 @@ export class UsersService {
   async updateById(id: string, user: Users): Promise<Users> {
     return await this.userModel.findByIdAndUpdate(id, user, { new: true });
   }
+
+  async deleteById(id: string): Promise<Users> {
+    return await this.userModel.findByIdAndDelete(id);
+  }
 }
