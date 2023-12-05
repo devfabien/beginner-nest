@@ -15,7 +15,12 @@ describe('ItemsService', () => {
     __v: 0,
     description: 'this is item two',
   };
-  const mockItemService = { findOne: jest.fn(), find: jest.fn() };
+  const mockItemService = {
+    findOne: jest.fn(),
+    find: jest.fn(),
+    findByIdAndUpdate: jest.fn(),
+    findByIdAndDelete: jest.fn(),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -64,6 +69,32 @@ describe('ItemsService', () => {
         NotFoundException,
       );
       expect(model.findOne).toHaveBeenCalledWith({ _id: mockItem._id });
+    });
+  });
+
+  describe('UpdateById', () => {
+    it('Should Update and return an Item', async () => {
+      const updatedItem = { ...mockItem, name: 'Updated Name' };
+      const newItem = {
+        name: 'Updated name',
+      };
+
+      jest.spyOn(model, 'findByIdAndUpdate').mockResolvedValue(updatedItem);
+      const result = await service.update(mockItem._id, newItem as any);
+      expect(model.findByIdAndUpdate).toHaveBeenCalledWith(
+        mockItem._id,
+        newItem,
+        { new: true },
+      );
+      expect(result).toEqual(updatedItem);
+    });
+  });
+  describe('deleteById', () => {
+    it('should find by id and delete an item', async () => {
+      jest.spyOn(model, 'findByIdAndDelete').mockResolvedValue(mockItem);
+      const result = await service.delete(mockItem._id);
+      expect(model.findByIdAndDelete).toHaveBeenCalledWith(mockItem._id);
+      expect(result).toEqual(mockItem);
     });
   });
 });
