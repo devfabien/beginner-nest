@@ -1,8 +1,11 @@
-import { Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @Schema({ timestamps: true })
 export class Users {
+  @Prop()
   userName: string;
+
+  @Prop()
   password: string;
 }
 
