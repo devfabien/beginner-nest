@@ -23,6 +23,7 @@ describe('AuthService', () => {
   const mockAuthService = {
     findOne: jest.fn(),
   };
+  const token = 'jwtToken';
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -41,5 +42,20 @@ describe('AuthService', () => {
 
   it('should be defined', () => {
     expect(authService).toBeDefined();
+  });
+  describe('sign in', () => {
+    const signInDto = {
+      userName: 'Fabien',
+      password: 'fabien123',
+    };
+    it('should login a user and return a token', async () => {
+      jest.spyOn(model, 'findOne').mockResolvedValueOnce(mockUser);
+      jest.spyOn(jwtService, 'signAsync').mockResolvedValue(token);
+      const result = await authService.signIn(
+        signInDto.userName,
+        signInDto.password,
+      );
+      expect(result).toEqual({ access_token: token });
+    });
   });
 });
