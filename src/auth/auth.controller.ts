@@ -10,7 +10,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Public()
   @Post()
-  signIn(@Body() signInDto: CreateUseDto) {
+  signIn(@Body() signInDto: CreateUseDto): Promise<{ access_token: string }> {
     return this.authService.signIn(signInDto.userName, signInDto.password);
   }
 }
