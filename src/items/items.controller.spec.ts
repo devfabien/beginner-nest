@@ -19,7 +19,7 @@ describe('ItemsController', () => {
     create: jest.fn(),
     findOne: jest.fn().mockResolvedValueOnce(mockItem),
     update: jest.fn(),
-    delete: jest.fn(),
+    delete: jest.fn().mockResolvedValueOnce(mockItem),
   };
 
   beforeEach(async () => {
@@ -90,6 +90,15 @@ describe('ItemsController', () => {
 
       expect(itemsService.update).toHaveBeenCalled();
       expect(result).toEqual(updatedItem);
+    });
+  });
+
+  describe('delete an item', () => {
+    it('should delete a single item by id', async () => {
+      const result = await itemController.delete(mockItem._id);
+
+      expect(itemsService.delete).toHaveBeenCalled();
+      expect(result).toEqual(mockItem);
     });
   });
 });
