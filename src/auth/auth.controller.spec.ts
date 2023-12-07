@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { CreateUseDto } from 'src/users/dto/create-user.dto';
 
 describe('AuthController', () => {
   let authController: AuthController;
@@ -37,5 +37,18 @@ describe('AuthController', () => {
 
   it('should be defined', () => {
     expect(authController).toBeDefined();
+  });
+
+  describe('sign in', () => {
+    it('should sign in the user and return a token', async () => {
+      const signInDto = {
+        userName: 'Fabien',
+        password: 'fabien123',
+      };
+      const result = await authController.signIn(signInDto);
+
+      expect(authService.signIn).toHaveBeenCalled();
+      expect(result).toEqual(jwtToken);
+    });
   });
 });
