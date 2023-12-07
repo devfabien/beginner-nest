@@ -74,4 +74,22 @@ describe('ItemsController', () => {
       expect(result).toEqual(mockItem);
     });
   });
+  describe('update item', () => {
+    it('should update item by id', async () => {
+      const updatedItem = { ...mockItem, name: 'Updated Name' };
+      const newItem = {
+        name: 'Updated name',
+      };
+
+      mockItemService.update = jest.fn().mockResolvedValueOnce(updatedItem);
+
+      const result = await itemController.update(
+        mockItem._id,
+        newItem as CreateItemDto,
+      );
+
+      expect(itemsService.update).toHaveBeenCalled();
+      expect(result).toEqual(updatedItem);
+    });
+  });
 });
