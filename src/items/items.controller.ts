@@ -38,8 +38,8 @@ export class ItemsController {
   }
   @Put(':id')
   async update(
-    @Body() updateItemDto: CreateItemDto,
     @Param('id') id: string,
+    @Body() updateItemDto: CreateItemDto,
   ): Promise<Item> {
     return this.itemsService.update(id, updateItemDto);
   }
