@@ -35,4 +35,13 @@ describe('ItemsController', () => {
   it('should be defined', () => {
     expect(itemController).toBeDefined();
   });
+
+  describe('get all items', () => {
+    it('should get all items', async () => {
+      const result = await itemController.findAll();
+
+      expect(itemsService.findAll).toHaveBeenCalled();
+      expect(result).toEqual([mockItem]);
+    });
+  });
 });
