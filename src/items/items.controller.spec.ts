@@ -65,4 +65,13 @@ describe('ItemsController', () => {
       expect(result).toEqual(mockItem);
     });
   });
+
+  describe('get a single item', () => {
+    it('should get a single item by id', async () => {
+      const result = await itemController.findOne(mockItem._id);
+
+      expect(itemsService.findOne).toHaveBeenCalled();
+      expect(result).toEqual(mockItem);
+    });
+  });
 });
