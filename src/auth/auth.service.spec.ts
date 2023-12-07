@@ -5,6 +5,7 @@ import { Users } from '../users/schemas/users.schema';
 import { getModelToken } from '@nestjs/mongoose';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
+import { UnauthorizedException } from '@nestjs/common';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -56,6 +57,13 @@ describe('AuthService', () => {
         signInDto.password,
       );
       expect(result).toEqual({ access_token: token });
+    });
+
+    it('should find the user', async () => {
+      jest.spyOn(model, 'findOne').mockResolvedValueOnce(null);
+      expect(
+        authService.signIn(signInDto.userName, signInDto.password),
+      ).rejects.toThrow(UnauthorizedException);
     });
   });
 });
