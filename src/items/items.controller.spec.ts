@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ItemsController } from './items.controller';
 import { ItemsService } from './items.service';
+import { CreateItemDto } from './dto/create-item.dto';
 
 describe('ItemsController', () => {
   let itemController: ItemsController;
@@ -15,6 +16,10 @@ describe('ItemsController', () => {
   };
   const mockItemService = {
     findAll: jest.fn().mockResolvedValueOnce([mockItem]),
+    create: jest.fn(),
+    findOne: jest.fn().mockResolvedValueOnce(mockItem),
+    update: jest.fn(),
+    delete: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -42,6 +47,22 @@ describe('ItemsController', () => {
 
       expect(itemsService.findAll).toHaveBeenCalled();
       expect(result).toEqual([mockItem]);
+    });
+  });
+
+  describe('create new item', () => {
+    it('should create a new item', async () => {
+      const newItem = {
+        name: 'new item',
+        description: 'new item description',
+        quantity: 28,
+      };
+
+      itemsService.create = jest.fn().mockResolvedValueOnce(mockItem);
+      const result = await itemController.create(newItem as CreateItemDto);
+
+      expect(itemsService.create).toHaveBeenCalled();
+      expect(result).toEqual(mockItem);
     });
   });
 });
