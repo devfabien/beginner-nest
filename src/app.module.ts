@@ -9,9 +9,9 @@ import config from '../config/keys';
 
 @Module({
   imports: [
-    ItemsModule,
-    UsersModule,
     AuthModule,
+    UsersModule,
+    ItemsModule,
     MongooseModule.forRoot(config.mongoURI),
   ],
   controllers: [AppController],
